@@ -18,7 +18,7 @@
 			     <a href="#"><img src="images/cart.png" height=50px width=50px/><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></a>
 	</div>
 	<!--Navigation Bar for the page-->
-	<div id=main>
+	<div id="main" class="container-fluid">
 		<nav class="navbar navbar-inverse" id="main">
 		 
 		    <div class="navbar-header">
@@ -48,21 +48,21 @@
 		      </ul>
 		    </div>
 		</nav>
-		<div class="container-fluid">
+		
 			<div class="row">
 				<div class="col-md-1"></div>
 				<div class="col-md-11">
 					<h3>Top Pics</h3>
 				</div>
 			</div>
-		</div>
+		
 	</div>
   	<script src="js/jquery-3.1.0.min.js"></script>
   	<script src="js/bootstrap.js"></script>
   	<script>
 	function openNav() {
 	    document.getElementById("mySidenav").style.width = "400px";
-	    document.getElementById("main").style.marginLeft = "500px";
+	    document.getElementById("main").style.marginLeft = "400px";
 	    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
 	}
 
