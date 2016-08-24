@@ -56,7 +56,7 @@
 		
 			<div class="container-fluid">
 				<div class="col-md-12">
-					<h3>Suggestions</h3>
+					<h4><strong>Suggestions</strong></h4>
 				</div>
 					<!--Content Data-->
 				<div class="col-md-4">
@@ -73,6 +73,7 @@
 								<tr><th>url</th><td>db/journals/ai/ai85.html#CharniakCACGKLM96</td></tr>
 								<tr><th>author</th><td>John McCann</td></tr>
 							</table>
+							<a href="#" class="label label-primary">Add to Cart</a>
 						</div>
 					</div>
 				</div>
@@ -90,6 +91,7 @@
 								<tr><th>url</th><td>db/journals/ai/ai85.html#CharniakCACGKLM96</td></tr>
 								<tr><th>author</th><td>John McCann</td></tr>
 							</table>
+							<a href="#" class="label label-primary">Add to Cart</a>
 						</div>
 					</div>
 				</div>
@@ -107,12 +109,11 @@
 								<tr><th>url</th><td>db/journals/ai/ai85.html#CharniakCACGKLM96</td></tr>
 								<tr><th>author</th><td>John McCann</td></tr>
 							</table>
+							<a href="#" class="label label-primary">Add to Cart</a>
 						</div>
 					</div>
 				</div>
-
-			</div>
-		
+			</div>	
 	</div>
   	<script src="js/jquery-3.1.0.min.js"></script>
   	<script src="js/bootstrap.js"></script>
