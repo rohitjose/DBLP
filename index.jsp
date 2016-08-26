@@ -169,6 +169,12 @@
   			</div>
 		</div>
 		<!--Search Page End-->
+		<!--Footer-->
+		<div class="footer navbar-fixed-bottom">
+			<div class="container-fluid">
+				<footer><h5>Footer of the page</h5></footer>
+			</div>
+		</div>
 	</div>
 	<!--Root page content end-->
 	<!-- Scripts -->
