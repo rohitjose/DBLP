@@ -22,8 +22,8 @@
      </div>
 	</div>
 	<!--Navigation Bar for the page-->
-	
-		<nav class="navbar navbar-default" id="main">
+	<div class="container-fluid" id="main">
+		<nav class="navbar navbar-default" >
 		 <div id="main" class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -37,8 +37,8 @@
 
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 		      <ul class="nav navbar-nav">
-		        <li class="active" id="nav-menu-item-1" onclick="onClick()"><a href="#">Home<span class="sr-only">(current)</span></a></li>
-		        <li id="nav-menu-item-2" onclick="onClick()"><a href="#">Advanced Search</a></li>
+		        <li class="active" id="nav-menu-item-1" onclick="onClick()"><a href="#" onclick="openPage(event, 'home')">Home<span class="sr-only">(current)</span></a></li>
+		        <li id="nav-menu-item-2" onclick="onClick()"><a href="#" onclick="openPage(event, 'search')">Advanced Search</a></li>
 		      </ul>
 		      
 		      <form class="navbar-form navbar-right" role="search">
@@ -52,9 +52,9 @@
 		      </ul>
 		    
 		</nav>
-		</div>
-		
-			<div class="container-fluid">
+
+		<div class="container-fluid" id="home">	
+			
 				<div class="col-md-12">
 					<h4><strong>Suggestions</strong></h4>
 				</div>
@@ -63,7 +63,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Taggers for Parsers.</div>
 						<div class="panel-body">
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped">
 								<tr><th>journal</th><td>Artif. In</div>tell</td></tr>
 								<tr><th>ee</th><td>http://dx.doi.org/10.1016/0004-3702(95)00108-5</td></tr>
 								<tr><th>pages</th><td>45-57</td></tr>
@@ -81,7 +81,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Taggers for Parsers.</div>
 						<div class="panel-body">
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped">
 								<tr><th>journal</th><td>Artif. In</div>tell</td></tr>
 								<tr><th>ee</th><td>http://dx.doi.org/10.1016/0004-3702(95)00108-5</td></tr>
 								<tr><th>pages</th><td>45-57</td></tr>
@@ -99,7 +99,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Taggers for Parsers.</div>
 						<div class="panel-body">
-							<table class="table table-striped table-hover ">
+							<table class="table table-striped">
 								<tr><th>journal</th><td>Artif. In</div>tell</td></tr>
 								<tr><th>ee</th><td>http://dx.doi.org/10.1016/0004-3702(95)00108-5</td></tr>
 								<tr><th>pages</th><td>45-57</td></tr>
@@ -114,6 +114,10 @@
 					</div>
 				</div>
 			</div>	
+		</div>	
+		<div class="container-fluid" id="search" style="display:none;">
+			<div class="col-md-12"><h1>This is a test</h1></div>
+		</div>
 	</div>
   	<script src="js/jquery-3.1.0.min.js"></script>
   	<script src="js/bootstrap.js"></script>

@@ -14,3 +14,15 @@ function onClick(){
 	document.getElementById('nav-menu-item-1').classList.toggle('active');
 	document.getElementById('nav-menu-item-2').classList.toggle('active');
 }
+
+function openPage(evt,page){
+	document.getElementById(page).style.display = "block";
+
+	if(page==="home"){
+		document.getElementById("search").style.display = "none";
+	}
+
+	if(page==="search"){
+		document.getElementById("home").style.display = "none";
+	}
+}
