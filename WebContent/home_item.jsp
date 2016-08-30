@@ -76,7 +76,7 @@
 
 			<div class="panel-body">
 				<!--Panel Body-->
-				<form name="cart<%=hashcode%>" method="post" action="cart" onsubmit="formSubmit(<%=hashcode%>); return false;">
+				<form name="cart<%=hashcode%>" method="post" action="cart" onsubmit="addToCart(<%=hashcode%>); return false;">
 				<table class="table table-striped">
 				<input type="hidden" name="title_<%=hashcode%>" value="<%=title_value%>" id="title_<%=hashcode%>"/>
 					<%

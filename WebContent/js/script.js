@@ -38,31 +38,45 @@ function close_modal(hashcode) {
 	modal.style.display = "none";
 }
 
-
-function formSubmit(hashcode) {
+function addToCart(hashcode) {
 	var form = $('#cart'.concat(hashcode));
 	var test = $('#cart'.concat(hashcode)).serialize();
-	console.log("This is test" + JSON.stringify(test));
-	
-	var children= $(this).children();
 
-	console.log(children);
-	
 	var modal = document.getElementById("myModal_".concat(hashcode));
 	modal.style.display = "none";
-	
+
 	if (test === null) {
 		console.log("Test is null");
 	}
-	$.ajax({
-		type : 'POST',
-		url : 'cart',//data : {title:$(('input#'.concat('title_')).concat(hashcode)).val()}
-		data : $(this).serialize(),
-		success : function(data) {
+	$
+			.ajax({
+				type : 'POST',
+				url : 'cart',
+				data : {
+					'title' : $(('input#'.concat('title_')).concat(hashcode))
+							.val(),
+					'action' : 'add_cart'
+				},
+				success : function(data) {
+					new_title = data;
+					var cart_content = document.getElementById("cart_content").innerHTML;
+					var cart_empty = null;
+					if (document.getElementById("empty_cart") !== null)
+						cart_empty = document.getElementById("empty_cart").innerHTML;
+					console
+							.log(document.getElementById("cart_content").innerHTML);
 
-		}
-	}
-	
-	);
-	 return false; // not refreshing page
+					console.log(cart_empty === null);
+
+					if (!(cart_empty === null)) {
+						document.getElementById("cart_content").innerHTML = data;
+					} else {
+						document.getElementById("cart_content").innerHTML = cart_content
+								+ data;
+					}
+				}
+			}
+
+			);
+	return false; // not refreshing page
 }
