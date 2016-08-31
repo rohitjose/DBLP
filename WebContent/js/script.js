@@ -38,10 +38,19 @@ function close_modal(hashcode) {
 	modal.style.display = "none";
 }
 
+// Hide the alerts for the cart messages
+$(document).ready(function() {
+	$("#item_add_success").hide();
+	$("#item_remove_success").hide();
+
+});
+
+// add item to the cart
 function addToCart(hashcode) {
 	var form = $('#cart'.concat(hashcode));
 	var test = $('#cart'.concat(hashcode)).serialize();
 
+	// Close the document display modal pane
 	var modal = document.getElementById("myModal_".concat(hashcode));
 	modal.style.display = "none";
 
@@ -55,7 +64,8 @@ function addToCart(hashcode) {
 				data : {
 					'title' : $(('input#'.concat('title_')).concat(hashcode))
 							.val(),
-					'action' : 'add_cart'
+					'action' : 'add_cart',
+					'hashcode' : hashcode
 				},
 				success : function(data) {
 					new_title = data;
@@ -63,10 +73,6 @@ function addToCart(hashcode) {
 					var cart_empty = null;
 					if (document.getElementById("empty_cart") !== null)
 						cart_empty = document.getElementById("empty_cart").innerHTML;
-					console
-							.log(document.getElementById("cart_content").innerHTML);
-
-					console.log(cart_empty === null);
 
 					if (!(cart_empty === null)) {
 						document.getElementById("cart_content").innerHTML = data;
@@ -74,9 +80,48 @@ function addToCart(hashcode) {
 						document.getElementById("cart_content").innerHTML = cart_content
 								+ data;
 					}
+					// Display alert
+					$("#item_add_success").alert();
+					$("#item_add_success").fadeTo(2000, 500).slideUp(500,
+							function() {
+								$("#item_add_success").slideUp(500);
+							});
+
 				}
 			}
 
 			);
 	return false; // not refreshing page
+}
+
+function removeCartItem(hashcode, title) {
+	$('#'.concat(hashcode)).remove();
+
+	$.ajax({
+		type : 'POST',
+		url : 'cart',
+		data : {
+			'title' : title,
+			'action' : 'remove_cart',
+			'hashcode' : hashcode
+		},
+		success : function(data) {
+			// Empty Cart
+
+			if (data.length > 2) {
+				document.getElementById("cart_content").innerHTML = data;
+
+			}
+			// Display Alert
+			$("#item_remove_success").alert();
+			$("#item_remove_success").fadeTo(2000, 500).slideUp(500,
+					function() {
+						$("#item_remove_success").slideUp(500);
+					});
+
+		}
+	}
+
+	);
+	return false;
 }

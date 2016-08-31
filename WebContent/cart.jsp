@@ -15,32 +15,34 @@
 			<div id="cart_content">
 				<%
 					session = request.getSession();
-					ArrayList<String> cart = new ArrayList<String>();
+					ArrayList<HashMap<String,String>> cart = new ArrayList<HashMap<String,String>>();
 					
 					
 					if(session.getAttribute("cart")==null)
 						session.setAttribute("cart", cart);
 					else
-						cart = (ArrayList<String>)session.getAttribute("cart");
+						cart = (ArrayList<HashMap<String,String>>)session.getAttribute("cart");
 					
 
 					if (cart.size()==0) {
 				%>
 				<div class="col-md-12 panel panel-primary" id="empty_cart">
 					<div>
-						<h6>No items in the cart!</h6>
+						<h6>Shopping Cart is Empty!</h6>
 
 					</div>
 				</div>
 				<%
 					} else {
-						for (String item : cart) {
+						for (HashMap<String,String> item : cart) {
+							String title = item.get("title");
+							String hashcode = item.get("hashcode");
 				%>
-				<div class="col-md-12 panel panel-primary">
+				<div class="col-md-12 panel panel-primary" id="cart_item<%=hashcode%>">
 					<div>
 						<h6>
-							<%=item%> <br/>
-							<button class="btn btn-warning btn-xs cart">Remove</button>
+							<%=title%> <br/>
+							<button class="btn btn-warning btn-xs cart" onclick="removeCartItem('cart_item<%=hashcode%>','<%=title%>')">Remove</button>
 						</h6><br/>
 
 					</div>

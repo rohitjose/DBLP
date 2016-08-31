@@ -19,6 +19,7 @@
 	<div class="container-fluid" id="main">
 		<%@ include file="nav.jsp"%>
 		<!--Home Page begin -->
+		<%@ include file="alert.jsp"%>
 		<div class="container-fluid" id="home">
 			<div class="col-md-12">
 				<h4>

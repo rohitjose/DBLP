@@ -95,7 +95,7 @@
 					%>
 				</table>
 				<input type="hidden" name="form_action" value="add_cart"/>
-				<input class="btn btn-primary btn-xs" type="submit" value="Add to Cart"></input>
+				<input class="btn btn-primary btn-xs" type="submit" value="Add to Cart" id="item_add"></input>
 				</form>
 			</div>
 			<!--Panel body end-->
