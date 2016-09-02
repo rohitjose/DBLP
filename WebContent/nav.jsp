@@ -15,15 +15,17 @@
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 		<ul class="nav navbar-nav">
 			<li class="active" id="nav-menu-item-1" onclick="onClick()"><a
-				href="#" onclick="openPage(event, 'home')">Home<span
+				href="." onclick="openPage(event, 'home')">Home<span
 					class="sr-only">(current)</span></a></li>
 			<li id="nav-menu-item-2" onclick="onClick()"><a href="#"
 				onclick="openPage(event, 'search')">Search</a></li>
 		</ul>
 		<!--Title Search form in the Navigation bar-->
-		<form class="navbar-form navbar-right" role="search">
+		<form class="navbar-form navbar-right" role="search_title"
+			method="post" action="search" onsubmit="titlesearch()">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Title Search">
+				<input type="text" class="form-control" placeholder="Title Search" name="title_query"/>
+				<input type="hidden" name="action" value="search_title" />
 			</div>
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>

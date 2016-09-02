@@ -1,40 +1,44 @@
-<%@ page
-	import="comp9321.assignment1.dblp.ReadXMLFile, 
-	java.util.*,
-	javax.xml.stream.XMLStreamException,
-	java.io.IOException,
+<%@ page import="java.util.*,
 	comp9321.assignment1.dblp.DocumentBean"%>
 <!--Content Data-->
 <%
-	int retrieve_count = 12;
+	ArrayList<HashMap<String, String>> document_list = new ArrayList<HashMap<String, String>>();
+	boolean display_next_button = (Boolean) request
+			.getAttribute("display_next_button"); 
+	boolean no_match = (Boolean) request.getAttribute("results_match");
+	document_list = (ArrayList<HashMap<String, String>>) request
+			.getAttribute("results");
 
-	ArrayList<HashMap<String, String>> article_list = new ArrayList<HashMap<String, String>>();
-	String error_message = new String();
-
-	try {
-		ReadXMLFile xmlReader = new ReadXMLFile();
-		article_list = xmlReader.getRandomDocuments(retrieve_count);
-
-	} catch (XMLStreamException e) {
-		error_message = e.getMessage();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		error_message = e.getMessage();
-	}
-
-	if (article_list.size() > 0) {
-		for (HashMap<String, String> article : article_list) {
-			DocumentBean document = new DocumentBean(article);
+	if (no_match) {
 %>
-<!-- Item -->
-
+<div class="col-md-12">
+	<h5>Sorry, no matching datasets found!</h5>
+</div>
 <%
-			String title_value = document.getTitle();
-			int hashcode = Math.abs(article.hashCode());
+	}
 %>
+<%
+
+	int document_counter = 0;
+	for (HashMap<String, String> article : document_list) {
+		DocumentBean document = new DocumentBean(article);
+		document_counter++;
+
+		if (document_counter > 12)
+			break;
+
+		String type = document.getType();
+		String mdate = document.getModifiedDate();
+		String mkey = document.getKey();
+		String year = document.getYear();
+		String title_value = document.getTitle();
+		int hashcode = Math.abs(article.hashCode());
+		
+%>
+
+<!-- Item -->
 <div class="col-md-3">
 	<!-- Item -->
-
 	<div class="panel panel-primary">
 		<!--Panel Definition-->
 		<div class="panel-heading">
@@ -46,14 +50,7 @@
 		<!--Panel heading-->
 		<div class="panel-body">
 			<!--Panel Body-->
-
 			<table class="table table-striped">
-				<%
-					String type = document.getType();
-					String mdate = document.getModifiedDate();
-					String mkey = document.getKey();
-					String year = document.getYear();
-				%>
 				<tr>
 					<th>Key</th>
 					<td><%=mkey%></td>
@@ -97,23 +94,23 @@
 				<form name="cart<%=hashcode%>" method="post" action="cart"
 					onsubmit="addToCart(<%=hashcode%>); return false;">
 					<table class="table table-striped">
-						<input type="hidden" name="title_<%=hashcode%>" 
-						       value="<%=title_value%>" id="title_<%=hashcode%>" />
+						<input type="hidden" name="title_<%=hashcode%>"
+							value="<%=title_value%>" id="title_<%=hashcode%>" />
 						<%
 							for (String key : article.keySet()) {
-										if (!key.equals("title")) {
-											String header_value = key;
-											String data_value = article.get(key);
+									if (!key.equals("title")) {
+										String header_value = key;
+										String data_value = article.get(key);
 						%>
 						<tr>
 							<th><%=header_value%></th>
 							<td><%=data_value%></td>
 							<input type="hidden" name="<%=header_value%>_<%=hashcode%>"
-								   value="<%=data_value%> id=" <%=header_value%> _ <%=hashcode%>"/>
+								value="<%=data_value%> id=" <%=header_value%> _ <%=hashcode%>"/>
 						</tr>
 						<%
 							}
-									}
+								}
 						%>
 					</table>
 					<input type="hidden" name="form_action" value="add_cart" /> <input
@@ -129,8 +126,20 @@
 
 </div>
 
-
 <%
 	}
+%>
+
+<%
+	if (display_next_button) {
+%>
+<div class="col-md-12">
+	<form method="post" action="next">
+		<input type="hidden" name="action" value="next"/>
+		<input type="submit" class="btn btn-primary btn-sm next" value="Next&nbsp;>">
+	</form>
+</div>
+<%
 	}
 %>
+

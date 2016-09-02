@@ -125,3 +125,26 @@ function removeCartItem(hashcode, title) {
 	);
 	return false;
 }
+
+function titlesearch() {
+	console.log('reached here to validate the form');
+}
+
+// Function to handle the next page logic
+function nextPage() {
+	console.log('Next Page function');
+
+	$.ajax({
+		type : 'POST',
+		url : 'next',
+		data : {
+			'action' : 'next',
+		},
+		success : function(data) {
+			console.log('Done');
+
+		}
+	}
+
+	);
+}
