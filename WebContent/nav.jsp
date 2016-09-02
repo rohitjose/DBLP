@@ -24,13 +24,16 @@
 		<form class="navbar-form navbar-right" role="search_title"
 			method="post" action="search" onsubmit="titlesearch()">
 			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Title Search" name="title_query"/>
-				<input type="hidden" name="action" value="search_title" />
+				<input type="text" class="form-control" placeholder="Title Search"
+					name="title_query" /> <input type="hidden" name="action"
+					value="search_title" />
 			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
+			<button type="submit" class="btn btn-primary btn-sm">Submit</button>
 		</form>
 		<!--Title Search form end-->
 		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#" data-toggle="modal" data-target="#quicksearch"><span
+					style="cursor: pointer">Quick Search</span></a></li>
 			<li><a href="#" onclick="openNav()"><span
 					style="cursor: pointer">Shopping cart</span></a></li>
 		</ul>

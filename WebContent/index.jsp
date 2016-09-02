@@ -35,10 +35,12 @@
 		<!--Footer-->
 		<%@ include file="footer.jsp"%>
 	</div>
+	
 	<!--Root page content end-->
 	<!-- Scripts -->
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/script.js"></script>
+	<%@ include file="quick_search.jsp"%>
 </body>
 </html>

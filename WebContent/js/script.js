@@ -148,3 +148,14 @@ function nextPage() {
 
 	);
 }
+
+function quicksearch_open() {
+	var modal = document.getElementById("quicksearch");
+	modal.style.display = "block";
+
+}
+
+function close_quicksearch() {
+	var modal = document.getElementById("quicksearch");
+	modal.style.display = "none";
+}
