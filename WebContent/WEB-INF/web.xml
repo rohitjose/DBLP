@@ -17,5 +17,6 @@
 		<url-pattern>/cart</url-pattern>
 		<url-pattern>/search</url-pattern>
 		<url-pattern>/next</url-pattern>
+		<url-pattern>/previous</url-pattern>
 	</servlet-mapping>
 </web-app>

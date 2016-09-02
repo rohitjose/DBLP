@@ -106,12 +106,22 @@ public class RouterServlet extends HttpServlet {
 				}
 				printer.println(response_content);
 			} else if (action.equals("search_title")) {
-
+				// TITLE SEARCH SECTION
 				String title_query = request.getParameter("title_query");
 				HashMap<String, String> query = new HashMap<String, String>();
 				ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
 				boolean display_next_button = false;
 				boolean no_match = false;
+
+				// clear current session
+				ArrayList<HashMap<String, String>> cart = new ArrayList<HashMap<String, String>>();
+				if (session.getAttribute("cart") != null)
+					cart = (ArrayList<HashMap<String, String>>) session
+							.getAttribute("cart");
+
+				session.invalidate();// Invalidate all the session variables
+				session = request.getSession(); // create new session
+				session.setAttribute("cart", cart);// set the cart
 
 				query.put("title", title_query);
 
@@ -144,61 +154,114 @@ public class RouterServlet extends HttpServlet {
 				// Set request parameters
 				request.setAttribute("results", results);
 				request.setAttribute("display_next_button", display_next_button);
+				request.setAttribute("display_previous_button", false);
 				request.setAttribute("results_match", no_match);
 
 				// Forward request to the results page
 				RequestDispatcher rd = request
 						.getRequestDispatcher("results.jsp");
 				rd.forward(request, response);
+
+				// TITLE SEARCH SECTION END
 			} else if (action.equals("next")) {
+				// NEXT BUTTON HANDLER
+
 				// Get the session attributes
 				int current_page_count = (Integer) session
 						.getAttribute("current_page_count");
-				HashMap<String, String> buffer = (HashMap<String, String>) session
-						.getAttribute("buffer");
-				ReadXMLFile xmlReader = (ReadXMLFile) session
-						.getAttribute("xmlReader");
-				HashMap<String, String> query = (HashMap<String, String>) session
-						.getAttribute("query");
-
+				current_page_count++;
 				// Request parameters
 				boolean display_next_button = false;
+				boolean display_previous_button = false;
 				ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
-				results.add(buffer);
 
-				try {
-					ArrayList<HashMap<String, String>> results_list = xmlReader
-							.getQueryNodes(query, 13, false);
-					if (results_list.size() > 0)
-						results.addAll(results_list);
+				if (session.getAttribute(Integer.toString(current_page_count)) == null) {
+					HashMap<String, String> buffer = (HashMap<String, String>) session
+							.getAttribute("buffer");
+					ReadXMLFile xmlReader = (ReadXMLFile) session
+							.getAttribute("xmlReader");
+					HashMap<String, String> query = (HashMap<String, String>) session
+							.getAttribute("query");
 
-					if (results.size() <= 12)
-						display_next_button = false;
-					else {
-						display_next_button = true;
-						session.setAttribute("buffer", results.get(12));
+					results.add(buffer);
+
+					try {
+						ArrayList<HashMap<String, String>> results_list = xmlReader
+								.getQueryNodes(query, 13, false);
+						if (results_list.size() > 0)
+							results.addAll(results_list);
+
+					} catch (XMLStreamException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// Page count and session variable set
+					session.setAttribute(Integer.toString(current_page_count),
+							results);
+				} else {
+					results = (ArrayList<HashMap<String, String>>) session
+							.getAttribute(Integer.toString(current_page_count));
 				}
-				current_page_count++;
+
+				if (results.size() <= 12)
+					display_next_button = false;
+				else {
+					display_next_button = true;
+					session.setAttribute("buffer", results.get(12));
+				}
+
+				if (current_page_count != 1)
+					display_previous_button = true;
+
+				// set the page count for the session
 				session.setAttribute("current_page_count", current_page_count);
-				session.setAttribute(Integer.toString(current_page_count), results);
 
 				// Set request parameters
 				request.setAttribute("results", results);
 				request.setAttribute("display_next_button", display_next_button);
+				request.setAttribute("display_previous_button",
+						display_previous_button);
 				request.setAttribute("results_match", false);
+
+				RequestDispatcher rd = request
+						.getRequestDispatcher("results.jsp");
+				rd.forward(request, response);
+
+				// NEXT BUTTON HANDLER
+
+			} else if (action.equals("previous")) {
+				// PREVIOUS BUTTON HANDLER
+				int current_page_count = (Integer) session
+						.getAttribute("current_page_count");
+				current_page_count--;
+				boolean display_previous_button = false;
+				ArrayList<HashMap<String, String>> results = (ArrayList<HashMap<String, String>>) session
+						.getAttribute(Integer.toString(current_page_count));
+
 				
+				if (current_page_count != 1)
+					display_previous_button = true;
+
+				// Set the session attributes
+				session.setAttribute("current_page_count", current_page_count);
+				session.setAttribute("buffer", results.get(12));
+
+				// Set request parameters
+				request.setAttribute("results", results);
+				request.setAttribute("display_next_button", true);
+				request.setAttribute("display_previous_button",
+						display_previous_button);
+				request.setAttribute("results_match", false);
 				RequestDispatcher rd = request
 						.getRequestDispatcher("results.jsp");
 				rd.forward(request, response);
 
 			}
+
+			// END OF ACTION CHECK
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("Failure here "+action);
+			System.out.println("Failure here " + action);
 			e.printStackTrace();
 		}
 

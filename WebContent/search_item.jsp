@@ -4,10 +4,13 @@
 <%
 	ArrayList<HashMap<String, String>> document_list = new ArrayList<HashMap<String, String>>();
 	boolean display_next_button = (Boolean) request
-			.getAttribute("display_next_button"); 
+			.getAttribute("display_next_button");
 	boolean no_match = (Boolean) request.getAttribute("results_match");
 	document_list = (ArrayList<HashMap<String, String>>) request
 			.getAttribute("results");
+
+	boolean display_previous_button = (Boolean) request
+			.getAttribute("display_previous_button");
 
 	if (no_match) {
 %>
@@ -18,7 +21,6 @@
 	}
 %>
 <%
-
 	int document_counter = 0;
 	for (HashMap<String, String> article : document_list) {
 		DocumentBean document = new DocumentBean(article);
@@ -33,7 +35,6 @@
 		String year = document.getYear();
 		String title_value = document.getTitle();
 		int hashcode = Math.abs(article.hashCode());
-		
 %>
 
 <!-- Item -->
@@ -129,17 +130,30 @@
 <%
 	}
 %>
-
-<%
-	if (display_next_button) {
-%>
 <div class="col-md-12">
+	<%
+		if (display_next_button) {
+	%>
 	<form method="post" action="next">
-		<input type="hidden" name="action" value="next"/>
-		<input type="submit" class="btn btn-primary btn-sm next" value="Next&nbsp;>">
+		<input type="hidden" name="action" value="next" /> <input
+			type="submit" class="btn btn-primary btn-sm next" value="Next&nbsp;>">
 	</form>
+
+	<%
+		}
+	%>
+
+	<%
+		if (display_previous_button) {
+	%>
+
+	<form method="post" action="previous">
+		<input type="hidden" name="action" value="previous" /> <input
+			type="submit" class="btn btn-primary btn-sm previous" value="<&nbsp;Previous">
+	</form>
+
+	<%
+		}
+	%>
 </div>
-<%
-	}
-%>
 
