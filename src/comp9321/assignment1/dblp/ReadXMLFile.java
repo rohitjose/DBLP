@@ -73,8 +73,23 @@ public class ReadXMLFile {
 		String query_value = new String();
 		boolean match = false;
 
+		if (query.isEmpty()) {
+			match = true;
+		}
+
+		if (query.containsKey("type")) {
+			String document_type = node.get("type");
+			String query_document_type = query.get("type");
+
+			if (!query_document_type.contains("|" + document_type + "|")) {
+				return false;
+			} else if (query.keySet().size() == 1) {
+				return true;
+			}
+		}
+
 		for (String key : query.keySet()) {
-			if (node.containsKey(key)) {
+			if (node.containsKey(key) && !key.equals("type")) {
 				value = node.get(key).trim().toLowerCase();
 				query_value = query.get(key).trim().toLowerCase();
 

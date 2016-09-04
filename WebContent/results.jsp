@@ -30,7 +30,7 @@
 		</div>
 		<!--Home Page End-->
 		<!--Search Page Begin-->
-		<%@ include file="search_form.jsp"%>
+		<%@ include file="search.jsp"%>
 		<!--Search Page End-->
 		<!--Footer-->
 		<%@ include file="footer.jsp"%>

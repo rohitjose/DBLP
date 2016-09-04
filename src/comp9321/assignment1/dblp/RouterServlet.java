@@ -3,6 +3,7 @@ package comp9321.assignment1.dblp;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -36,6 +37,67 @@ public class RouterServlet extends HttpServlet {
 		System.out.println("Hello from GET method");
 		PrintWriter printer = response.getWriter();
 		printer.println("<h1>hello</h1>");
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void doSearch(HttpServletRequest request,
+			HttpServletResponse response, HashMap<String,String> query) throws ServletException, IOException{
+		// Get the action parameter
+		String action = request.getParameter("action");
+		HttpSession session = request.getSession();		
+		
+		
+		// Initialize the local variables for the request object
+		ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
+		boolean display_next_button = false;
+		boolean no_match = false;
+		
+		// clear current session
+		ArrayList<HashMap<String, String>> cart = new ArrayList<HashMap<String, String>>();
+		if (session.getAttribute("cart") != null)
+			cart = (ArrayList<HashMap<String, String>>) session
+					.getAttribute("cart");
+
+		session.invalidate();// Invalidate all the session variables
+		session = request.getSession(); // create new session
+		session.setAttribute("cart", cart);// set the cart
+		
+		// set the query as a session attribute
+		session.setAttribute("query", query);
+
+		try {
+			ReadXMLFile xmlreader = new ReadXMLFile();
+			results = xmlreader.getQueryNodes(query, 13, false);
+			session.setAttribute("xmlReader", xmlreader);
+
+			if (results.size() <= 12)
+				display_next_button = false;
+			else {
+				display_next_button = true;
+				session.setAttribute("buffer", results.get(12));
+			}
+
+			if (results.isEmpty())
+				no_match = true;
+
+			session.setAttribute("current_page_count", 1);
+			session.setAttribute("1", results);
+
+		} catch (XMLStreamException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Set request parameters
+		request.setAttribute("results", results);
+		request.setAttribute("display_next_button", display_next_button);
+		request.setAttribute("display_previous_button", false);
+		request.setAttribute("results_match", no_match);
+
+		// Forward request to the results page
+		RequestDispatcher rd = request
+				.getRequestDispatcher("results.jsp");
+		rd.forward(request, response);
 	}
 
 	/**
@@ -109,58 +171,10 @@ public class RouterServlet extends HttpServlet {
 				// TITLE SEARCH SECTION
 				String title_query = request.getParameter("title_query");
 				HashMap<String, String> query = new HashMap<String, String>();
-				ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();
-				boolean display_next_button = false;
-				boolean no_match = false;
-
-				// clear current session
-				ArrayList<HashMap<String, String>> cart = new ArrayList<HashMap<String, String>>();
-				if (session.getAttribute("cart") != null)
-					cart = (ArrayList<HashMap<String, String>>) session
-							.getAttribute("cart");
-
-				session.invalidate();// Invalidate all the session variables
-				session = request.getSession(); // create new session
-				session.setAttribute("cart", cart);// set the cart
-
 				query.put("title", title_query);
-
-				// set the query as a session attribute
-				session.setAttribute("query", query);
-
-				try {
-					ReadXMLFile xmlreader = new ReadXMLFile();
-					results = xmlreader.getQueryNodes(query, 13, false);
-					session.setAttribute("xmlReader", xmlreader);
-
-					if (results.size() <= 12)
-						display_next_button = false;
-					else {
-						display_next_button = true;
-						session.setAttribute("buffer", results.get(12));
-					}
-
-					if (results.isEmpty())
-						no_match = true;
-
-					session.setAttribute("current_page_count", 1);
-					session.setAttribute("1", results);
-
-				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				// Set request parameters
-				request.setAttribute("results", results);
-				request.setAttribute("display_next_button", display_next_button);
-				request.setAttribute("display_previous_button", false);
-				request.setAttribute("results_match", no_match);
-
-				// Forward request to the results page
-				RequestDispatcher rd = request
-						.getRequestDispatcher("results.jsp");
-				rd.forward(request, response);
+				
+				// Perform the search
+				doSearch(request, response, query);
 
 				// TITLE SEARCH SECTION END
 			} else if (action.equals("next")) {
@@ -238,7 +252,6 @@ public class RouterServlet extends HttpServlet {
 				ArrayList<HashMap<String, String>> results = (ArrayList<HashMap<String, String>>) session
 						.getAttribute(Integer.toString(current_page_count));
 
-				
 				if (current_page_count != 1)
 					display_previous_button = true;
 
@@ -255,6 +268,57 @@ public class RouterServlet extends HttpServlet {
 				RequestDispatcher rd = request
 						.getRequestDispatcher("results.jsp");
 				rd.forward(request, response);
+				// PREVIOUS BUTTON HANDLER END
+
+			} else if (action.equals("advanced_search")) {
+				// ADVANCED SEARCH HANDLER
+				FormBuilder form = new FormBuilder();
+				HashMap<String, String> form_fields = form.getFormFields();
+				HashMap<String, String> query = new HashMap<String, String>();
+				PropertyValues property = new PropertyValues();
+
+				for (String key : form_fields.keySet()) {
+					String value = (String) request.getParameter(key);
+					String prop_key = property.getPropValues(key);
+					if (value != null && !value.isEmpty()) {
+						if (prop_key != null)
+							query.put(prop_key, value);
+						else
+							query.put(key, value);
+					}
+				}
+
+				String[] type_list = (String[]) request
+						.getParameterValues("type");
+				if (type_list != null) {
+					String type = "";
+					for (String type_value : type_list) {
+						type = type + "|" + type_value + "|";
+					}
+
+					query.put("type", type);
+				}
+
+				doSearch(request, response, query);
+
+				// ADVANCED SEARCH HANDLER END
+
+			}
+			if (action.equals("quick_search")) {
+				// QUICK SEARCH HANDLER
+				HashMap<String, String> query = new HashMap<String, String>();
+				
+				// get the form variables
+				String title_query = request.getParameter("title");
+				if (!title_query.isEmpty())
+					query.put("title", title_query);
+				String author_query = request.getParameter("author");
+				if (!author_query.isEmpty())
+					query.put("author", author_query);
+				String type_query = request.getParameter("type");
+				query.put("type", "|" + type_query + "|");
+
+				doSearch(request, response, query);
 
 			}
 

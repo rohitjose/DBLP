@@ -6,7 +6,8 @@
 <div class="container-fluid" id="search" style="display: none;">
 
 	<!--Search Query Form-->
-	<form class="form-horizontal">
+	<form class="form-horizontal" action="search" method="post">
+	<input type="hidden" name="action" value="advanced_search"/>
 		<fieldset>
 			<!--Form details begin-->
 			<div class="col-md-12">
@@ -16,14 +17,7 @@
 					</h4>
 				</legend>
 			</div>
-			<!--Form Heading-->
-			<div class="form-group col-md-12">
-				<div class="col-md-11 text-right">
-					<button type="reset" class="btn btn-default">Cancel</button>
-					&nbsp;
-					<button type="submit" class="btn btn-primary">Search</button>
-				</div>
-			</div>
+
 			<%
 				for (String key : form_fields.keySet()) {
 			%>
@@ -32,7 +26,7 @@
 				<label name="<%=key%>_label" class="col-md-3 control-label"><%=form_fields.get(key)%></label>
 				<div class="col-md-7">
 					<input type="text" class="form-control" name="<%=key%>"
-						placeholder="Enter the Search <%=form_fields.get(key)%>">
+						placeholder="Enter the Search <%=form_fields.get(key)%>"></input>
 				</div>
 			</div>
 			<%
@@ -41,10 +35,10 @@
 			<!--Form Item 2 end-->
 			<!--Form Item 1 begin-->
 			<div class="form-group col-md-6">
-				<label for="select" class="col-md-3 control-label"><h5>Document
-						Type</h5></label>
+				<label for="select" class="col-md-3 control-label">Document
+					Type</label>
 				<div class="col-md-7">
-					<select multiple="" class="form-control">
+					<select multiple="multiple" class="form-control" name="type">
 						<option value="article">Article</option>
 						<option value="inproceedings">Inproceedings</option>
 						<option value="proceedings">Proceedings</option>
@@ -57,6 +51,13 @@
 				</div>
 			</div>
 			<!--Form Item 1 end-->
+			<br />
+			<!--Form Heading-->
+			<div class="form-group col-md-11">
+				<div class="col-md-12 text-right">
+					<button type="submit" class="btn btn-primary btn-sm">Search</button>
+				</div>
+			</div>
 			<!--Form details end-->
 		</fieldset>
 	</form>
